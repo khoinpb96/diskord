@@ -35,7 +35,9 @@ export default function Login() {
           <Input placeholder="Password" type="password" />
           <InputIcon className="fa-solid fa-lock" />
         </Label>
-        <Button onClick={submitHandler}>Login</Button>
+        <Button onClick={submitHandler} mt="8" mb="32">
+          Login
+        </Button>
         <P textAlign="center">or continue with these social profile</P>
         <Socials />
         <P textAlign="center">

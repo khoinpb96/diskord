@@ -20,3 +20,22 @@ export type ProfileContentProps = {
 export type SelectionProps = {
   logout?: boolean;
 };
+
+export type ButtonProps = {
+  mt?: string;
+  mb?: string;
+};
+
+export type SubTitleProps = {
+  mt?: string;
+  mb?: string;
+  fontSize?: string;
+  textAlign?: string;
+};
+
+export type TitleProps = {
+  mt?: string;
+  mb?: string;
+  fontSize?: string;
+  textAlign?: string;
+};

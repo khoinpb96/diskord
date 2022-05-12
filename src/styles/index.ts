@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export { default as GlobalStyle } from "./GlobalStyle";
 
-import { PProps } from "./../types/index";
+import { ButtonProps, PProps, SubTitleProps, TitleProps } from "./../types";
 
 export const AppContainer = styled.div`
   max-width: 480px;
@@ -25,13 +25,6 @@ export const Logo = styled.img`
   cursor: pointer;
 `;
 
-type TitleProps = {
-  mt?: string;
-  mb?: string;
-  fontSize?: string;
-  textAlign?: string;
-};
-
 export const Title = styled.div<TitleProps>`
   font-weight: 600;
   font-size: ${(props) => props.fontSize + "px" || ""};
@@ -46,13 +39,6 @@ export const Title = styled.div<TitleProps>`
     font-size: 24px;
   }
 `;
-
-type SubTitleProps = {
-  mt?: string;
-  mb?: string;
-  fontSize?: string;
-  textAlign?: string;
-};
 
 export const SubTitle = styled.div<SubTitleProps>`
   font-size: 16px;
@@ -94,7 +80,7 @@ export const InputIcon = styled.i`
   color: #828282;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonProps>`
   background: #2f80ed;
   border-radius: 8px;
   font-weight: 600;
@@ -106,7 +92,8 @@ export const Button = styled.button`
   transition: 200ms;
   cursor: pointer;
 
-  margin: 8px 0 32px 0;
+  margin-top: ${(props) => props.mt + "px" || ""};
+  margin-bottom: ${(props) => props.mb + "px" || ""};
 
   &:hover {
     background-color: #63a5ff;

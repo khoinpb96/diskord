@@ -37,7 +37,9 @@ export default function Register() {
           <Input placeholder="Password" type="password" />
           <InputIcon className="fa-solid fa-lock" />
         </Label>
-        <Button onClick={submitHandler}>Register</Button>
+        <Button onClick={submitHandler} mt="8" mb="32">
+          Register
+        </Button>
         <P textAlign="center">or continue with these social profile</P>
         <Socials />
         <P textAlign="center">

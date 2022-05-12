@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ProfileContentProps } from "../types";
+import { Button } from "./index";
 
 export const ProfileContainer = styled.div`
   border: 1px solid #e0e0e0;
@@ -7,6 +8,7 @@ export const ProfileContainer = styled.div`
   max-width: 850px;
   width: 100%;
   margin: 0 auto 3rem;
+  position: relative;
 
   @media (max-width: 576px) {
     border: none;
@@ -86,6 +88,52 @@ export const ProfileContentPhoto = styled(ProfileContent)`
     background-size: cover;
     width: 72px;
     height: 72px;
+    position: relative;
     border-radius: 8px;
+    cursor: pointer;
+
+    .icon {
+      position: absolute;
+      color: white;
+      top: 50%;
+      left: 50%;
+      font-size: 22px;
+      transform: translate(-50%, -50%);
+    }
   }
+`;
+
+export const BackButton = styled.div`
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 25px;
+  letter-spacing: -0.035em;
+  color: #2d9cdb;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  max-width: 850px;
+  width: 100%;
+  margin: 0 auto 1rem;
+`;
+export const EditInput = styled.input`
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.035em;
+
+  padding: 16px;
+  border: 1px solid #828282;
+  border-radius: 12px;
+  flex: 1;
+
+  &::placeholder {
+    color: #bdbdbd;
+  }
+`;
+export const SaveButton = styled(Button)`
+  padding: 8px 32px;
+  display: block;
+  margin-left: auto;
 `;
