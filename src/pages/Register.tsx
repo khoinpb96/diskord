@@ -7,20 +7,27 @@ import {
   Logo,
   P,
   PLink,
-  SocialButton,
-  Socials,
   SubTitle,
   Title,
-  Main,
-} from "../components";
+} from "../styles";
+import { Main, Socials } from "../components";
+
 import logo from "../assets/devchallenges-logo.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
+
+  const submitHandler = () => {
+    navigate("/profile");
+  };
   return (
     <Main>
       <AppContainer>
         <Logo src={logo} />
-        <Title mt="22">Welcome to my app!</Title>
+        <Title mt="22" fontSize="18">
+          Welcome to my app!
+        </Title>
         <SubTitle>Now please create a new account</SubTitle>
         <Label>
           <Input placeholder="Email" type="text" />
@@ -30,23 +37,10 @@ export default function Register() {
           <Input placeholder="Password" type="password" />
           <InputIcon className="fa-solid fa-lock" />
         </Label>
-        <Button>Register</Button>
-        <P>or continue with these social profile</P>
-        <Socials>
-          <SocialButton>
-            <i className="fa-brands fa-google" />
-          </SocialButton>
-          <SocialButton>
-            <i className="fa-brands fa-facebook-square" />
-          </SocialButton>
-          <SocialButton>
-            <i className="fa-brands fa-twitter" />
-          </SocialButton>
-          <SocialButton>
-            <i className="fa-brands fa-github" />
-          </SocialButton>
-        </Socials>
-        <P>
+        <Button onClick={submitHandler}>Register</Button>
+        <P textAlign="center">or continue with these social profile</P>
+        <Socials />
+        <P textAlign="center">
           Adready a member? <PLink to="/login">Login</PLink>
         </P>
       </AppContainer>

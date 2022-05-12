@@ -5,21 +5,26 @@ import {
   InputIcon,
   Label,
   Logo,
-  Main,
   P,
   PLink,
-  SocialButton,
-  Socials,
   Title,
-} from "../components";
+} from "../styles";
+import { Main, Socials } from "../components";
 import logo from "../assets/devchallenges-logo.svg";
 
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
+  const navigate = useNavigate();
+  const submitHandler = () => {
+    navigate("/profile");
+  };
+
   return (
     <Main>
       <AppContainer>
         <Logo src={logo} />
-        <Title mt="22" mb="22">
+        <Title mt="22" mb="22" fontSize="18">
           Login
         </Title>
         <Label>
@@ -30,23 +35,10 @@ export default function Login() {
           <Input placeholder="Password" type="password" />
           <InputIcon className="fa-solid fa-lock" />
         </Label>
-        <Button>Login</Button>
-        <P>or continue with these social profile</P>
-        <Socials>
-          <SocialButton>
-            <i className="fa-brands fa-google" />
-          </SocialButton>
-          <SocialButton>
-            <i className="fa-brands fa-facebook-square" />
-          </SocialButton>
-          <SocialButton>
-            <i className="fa-brands fa-twitter" />
-          </SocialButton>
-          <SocialButton>
-            <i className="fa-brands fa-github" />
-          </SocialButton>
-        </Socials>
-        <P>
+        <Button onClick={submitHandler}>Login</Button>
+        <P textAlign="center">or continue with these social profile</P>
+        <Socials />
+        <P textAlign="center">
           Don’t have an account yet? <PLink to="/">Register</PLink>
         </P>
       </AppContainer>
