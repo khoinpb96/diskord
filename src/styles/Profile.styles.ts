@@ -116,6 +116,7 @@ export const BackButton = styled.div`
 
   max-width: 850px;
   width: 100%;
+  padding: 0 18px;
   margin: 0 auto 1rem;
 `;
 export const EditInput = styled.input`

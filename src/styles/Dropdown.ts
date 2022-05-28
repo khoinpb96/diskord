@@ -11,6 +11,7 @@ export const DropdownContainer = styled.div`
   right: 18px;
   top: 100%;
   background: white;
+  z-index: 5;
 `;
 
 export const Selection = styled.div<SelectionProps>`

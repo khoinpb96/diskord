@@ -13,8 +13,10 @@ import logo from "../assets/devchallenges-logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../styles";
+import { useAuth } from "../hooks";
 
-export default function Header(props: HeaderProps) {
+export default function Header() {
+  const { user } = useAuth();
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
 
   const dropdownClickHandler = () => {
@@ -31,7 +33,7 @@ export default function Header(props: HeaderProps) {
       <Logo src={logo} onClick={logoClickHandler} />
       <UserContainer onClick={dropdownClickHandler}>
         <UserImg />
-        <UserName>{props.name || "NAME"}</UserName>
+        <UserName>{user.username || "NAME"}</UserName>
         <DropdownButton className="fa-solid fa-caret-down" />
         {dropdownIsOpen && <Dropdown />}
       </UserContainer>

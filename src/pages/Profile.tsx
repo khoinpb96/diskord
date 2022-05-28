@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Header from "../components/Header";
+import { useAuth } from "../hooks";
 import { P, Title } from "../styles";
 import {
   EditButton,
@@ -15,18 +17,23 @@ import {
   SaveButton,
 } from "../styles/Profile.styles";
 
-const fakeData = [
-  { title: "name", content: "Xanthe Neal" },
-  {
-    title: "bio",
-    content: "I am a software developer and a big fan of devchallenges...",
-  },
-  { title: "phone", content: "908249274292" },
-  { title: "email", content: "xanthe.neal@gmail.com" },
-  { title: "password", content: "************" },
-];
-
 export default function Profile() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user.username) {
+      navigate("/");
+    }
+  }, [user]);
+
+  const userData = [
+    { title: "name", content: user.username },
+    { title: "bio", content: user.bio },
+    { title: "phone", content: user.phone },
+    { title: "email", content: user.email },
+    { title: "password", content: "************" },
+  ];
   const [isEditing, setIsEditing] = useState(false);
 
   const profileViewPage = (
@@ -46,7 +53,7 @@ export default function Profile() {
         </ProfileContentPhoto>
       </ProfileRow>
 
-      {fakeData.map((row, i) => (
+      {userData.map((row, i) => (
         <ProfileRow key={i}>
           <ProfileContent>
             <div className="title">{row.title}</div>
@@ -79,7 +86,7 @@ export default function Profile() {
           </ProfileContentPhoto>
         </ProfileRow>
 
-        {fakeData.map((row, i) => (
+        {userData.map((row, i) => (
           <ProfileRow key={i}>
             <ProfileContent>
               <div className="title">{row.title}</div>

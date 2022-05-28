@@ -5,7 +5,7 @@ export { default as GlobalStyle } from "./GlobalStyle";
 
 import { ButtonProps, PProps, SubTitleProps, TitleProps } from "./../types";
 
-export const AppContainer = styled.div`
+export const FormContainer = styled.form`
   max-width: 480px;
   width: 100%;
   padding: 44px 58px;
@@ -118,6 +118,18 @@ export const PLink = styled(Link)`
   }
 `;
 
+export const NPLink = styled.i`
+  color: #2d9cdb;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  font-style: normal;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const SocialsContainer = styled.div`
   display: flex;
   gap: 20px;
@@ -142,4 +154,9 @@ export const SocialButton = styled.div`
     color: #464646;
     border: 2px solid #464646;
   }
+`;
+
+export const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
 `;

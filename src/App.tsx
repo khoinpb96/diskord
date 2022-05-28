@@ -1,13 +1,15 @@
-import { Routes, Route } from "react-router-dom";
-import { Register, Login, Profile } from "./pages";
+import { Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context";
+import { Auth, Profile } from "./pages";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/profile" element={<Profile />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Auth />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

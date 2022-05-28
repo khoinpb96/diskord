@@ -39,3 +39,22 @@ export type TitleProps = {
   fontSize?: string;
   textAlign?: string;
 };
+
+export type User = {
+  username: string;
+  authType?: "local" | "google" | "facebook" | "twitter" | "github";
+  email?: string;
+  bio?: string;
+  phone?: string;
+  photoUrl?: string;
+};
+
+export type AuthContextType = {
+  user: User;
+  login: (user: any) => void;
+  logout: () => void;
+};
+
+export type AuthProviderProps = {
+  children: React.ReactNode;
+};
