@@ -1,7 +1,10 @@
+import { AxiosResponse } from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthAPI } from "../api";
 import logo from "../assets/devchallenges-logo.svg";
 import { Main, Socials } from "../components";
+import { useInput } from "../hooks";
 import {
   Button,
   ErrorMessage,
@@ -14,14 +17,11 @@ import {
   P,
   Title,
 } from "../styles";
-import { useAuth, useInput } from "../hooks";
-import { AuthAPI } from "../api";
 
 export default function Auth() {
   const [isLoginStage, setIsLoginStage] = useState(true);
   const { input, setInput, error, initInput, setError } = useInput();
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const changeStageHandler = () => {
     setIsLoginStage((prev) => !prev);
@@ -32,33 +32,26 @@ export default function Auth() {
     e.preventDefault();
     const sendData = { username: input.username, password: input.password };
 
-    //REGISTER
+    //REGISTER;
+
     if (!isLoginStage) {
       try {
-        const { data } = await AuthAPI.post("/register", sendData);
-        if (data.code >= 400) {
-          return setError(data.message);
-        }
-
+        await AuthAPI.post("/register", sendData);
         setIsLoginStage(true);
         setInput(initInput);
-      } catch (error) {
-        console.log(error);
+        return;
+      } catch (err: any) {
+        return setError(err.response.data.message);
       }
     }
 
     //LOGIN
     try {
       const { data } = await AuthAPI.post("/login", sendData);
-      if (data.code >= 400) {
-        return setError(data.message);
-      }
-
-      login(data.data);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("userData", JSON.stringify(data));
       navigate("/profile", { replace: true });
-    } catch (error) {
-      console.log(error);
+    } catch (err: any) {
+      return setError(err.response.data.message);
     }
   };
 

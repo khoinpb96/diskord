@@ -5,7 +5,7 @@ const defaultUser = { username: "" };
 
 const defaultValue = {
   user: defaultUser,
-  login: () => {},
+  login: (user: any) => {},
   logout: () => {},
 };
 

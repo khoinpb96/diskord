@@ -26,6 +26,16 @@ export const ProfileRow = styled.div`
   }
 `;
 
+export const BottomRow = styled(ProfileRow)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 14px;
+  }
+`;
+
 export const ProfileHeader = styled(ProfileRow)`
   position: relative;
 `;
@@ -81,9 +91,16 @@ export const ProfileContent = styled.div<ProfileContentProps>`
   }
 `;
 
+export const ProfileInputContainer = styled(ProfileContent)`
+  align-items: flex-start;
+  flex-direction: column;
+`;
+
 export const ProfileContentPhoto = styled(ProfileContent)`
+  gap: ${(props) => props.editing && "27.5px"};
+
   .photo {
-    background: ${(props) => (props.imgUrl ? `url(${props.imgUrl})` : "black")};
+    background: ${(props) => (props.src ? `url(${props.src})` : "black")};
     background-repeat: no-repeat;
     background-size: cover;
     width: 72px;
@@ -119,6 +136,7 @@ export const BackButton = styled.div`
   padding: 0 18px;
   margin: 0 auto 1rem;
 `;
+
 export const EditInput = styled.input`
   font-size: 13px;
   line-height: 18px;
@@ -129,12 +147,14 @@ export const EditInput = styled.input`
   border-radius: 12px;
   flex: 1;
 
+  width: 100%;
+  max-width: 416px;
+
   &::placeholder {
     color: #bdbdbd;
   }
 `;
+
 export const SaveButton = styled(Button)`
   padding: 8px 32px;
-  display: block;
-  margin-left: auto;
 `;

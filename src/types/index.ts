@@ -4,7 +4,7 @@ export type HeaderProps = {
 };
 
 export type UserImgProps = {
-  imgUrl?: string;
+  src?: string;
 };
 
 export type PProps = {
@@ -12,9 +12,9 @@ export type PProps = {
 };
 
 export type ProfileContentProps = {
-  title?: string;
-  content?: string;
-  imgUrl?: string;
+  src?: string;
+  photo?: boolean;
+  editing?: boolean;
 };
 
 export type SelectionProps = {
@@ -47,6 +47,7 @@ export type User = {
   bio?: string;
   phone?: string;
   photoUrl?: string;
+  accessToken: string;
 };
 
 export type AuthContextType = {
@@ -58,3 +59,13 @@ export type AuthContextType = {
 export type AuthProviderProps = {
   children: React.ReactNode;
 };
+
+export type UserDataType = {
+  id?: string;
+  username: string;
+  authType?: "local" | "google" | "facebook" | "twitter" | "github";
+  email?: string;
+  bio?: string;
+  phone?: string;
+  photoUrl?: string;
+} | null;

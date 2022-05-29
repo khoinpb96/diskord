@@ -18,7 +18,7 @@ export const UserContainer = styled.div`
 `;
 
 export const UserImg = styled.div<UserImgProps>`
-  background: ${(props) => props.imgUrl || "black"};
+  background: ${(props) => props.src || "black"};
   width: 32px;
   height: 32px;
   border-radius: 8px;

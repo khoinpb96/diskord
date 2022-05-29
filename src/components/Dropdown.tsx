@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { DropdownContainer, Selection } from "../styles/Dropdown";
 
 export default function Dropdown() {
-  const logoutHandler = () => {};
+  const navigate = useNavigate();
+  const logoutHandler = () => {
+    localStorage.removeItem("userData");
+    navigate("/", { replace: true });
+  };
 
   return (
     <DropdownContainer>

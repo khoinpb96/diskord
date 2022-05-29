@@ -18,6 +18,7 @@ import { useAuth } from "../hooks";
 export default function Header() {
   const { user } = useAuth();
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
+  const auth = useAuth();
 
   const dropdownClickHandler = () => {
     setDropdownIsOpen((prev) => !prev);
@@ -25,6 +26,7 @@ export default function Header() {
 
   const navigate = useNavigate();
   const logoClickHandler = () => {
+    auth.logout();
     navigate("/");
   };
 
@@ -32,7 +34,7 @@ export default function Header() {
     <HeaderContainer>
       <Logo src={logo} onClick={logoClickHandler} />
       <UserContainer onClick={dropdownClickHandler}>
-        <UserImg />
+        <UserImg src={user.photoUrl || ""} />
         <UserName>{user.username || "NAME"}</UserName>
         <DropdownButton className="fa-solid fa-caret-down" />
         {dropdownIsOpen && <Dropdown />}
