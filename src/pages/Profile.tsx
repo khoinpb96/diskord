@@ -17,23 +17,22 @@ import {
   ProfileRow,
   SaveButton,
 } from "../styles/Profile.styles";
-import { UserDataType } from "../types";
 import { getUserDataFromLocalStorage } from "../utils";
 
 export default function Profile() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState<UserDataType>(null);
+  // const [user, setUser] = useState<UserDataType>(null);
   const [message, setMessage] = useState("");
 
-  const phoneInputRef = useRef<HTMLInputElement>();
-  const passwordInputRef = useRef<HTMLInputElement>();
-  const emailInputRef = useRef<HTMLInputElement>();
-  const bioInputRef = useRef<HTMLInputElement>();
-  const usernameInputRef = useRef<HTMLInputElement>();
-  const fileInputRef = useRef<HTMLInputElement>();
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const bioInputRef = useRef<HTMLInputElement>(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { id, accessToken } = getUserDataFromLocalStorage();
-  const auth = useAuth();
+  const { user, login } = useAuth();
 
   useEffect(() => {
     if (!accessToken) {
@@ -47,8 +46,7 @@ export default function Profile() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
-        setUser(data);
-        auth.login(data);
+        login(data);
       } catch (err: any) {
         console.log(err.response?.data?.message);
         localStorage.removeItem("userData");
@@ -159,9 +157,7 @@ export default function Profile() {
           type="file"
           style={{ display: "none" }}
           accept=".png, .jpg, .jpeg"
-          onChange={(e) => {
-            console.log(e.target?.files[0]);
-          }}
+          onChange={(e) => {}}
         />
 
         <ProfileRow>

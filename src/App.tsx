@@ -4,7 +4,7 @@ import { AuthProvider } from "./context";
 import { Auth, Profile } from "./pages";
 
 function App() {
-  console.log(config);
+  console.log({ ...config, env: import.meta.env.MODE });
   return (
     <AuthProvider>
       <Routes>

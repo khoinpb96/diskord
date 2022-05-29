@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import { AuthContextType, AuthProviderProps } from "../types";
 
-const defaultUser = { username: "" };
+const defaultUser = { username: "", accessToken: "" };
 
 const defaultValue = {
   user: defaultUser,
@@ -9,7 +9,9 @@ const defaultValue = {
   logout: () => {},
 };
 
-export const AuthContext = createContext<AuthContextType>(defaultValue);
+export const AuthContext = createContext<AuthContextType>(
+  defaultValue as AuthContextType
+);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState(defaultUser);
