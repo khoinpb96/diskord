@@ -213,7 +213,6 @@ export default function Profile() {
             <div className="title">password</div>
             <EditInput
               ref={passwordInputRef}
-              type="text"
               placeholder="Enter your new password..."
               type="password"
             />
