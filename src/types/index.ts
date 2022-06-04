@@ -48,6 +48,7 @@ export type User = {
   phone?: string;
   photoUrl?: string;
   accessToken: string;
+  fullName?: string;
 };
 
 export type AuthContextType = {

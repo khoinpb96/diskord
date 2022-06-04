@@ -18,10 +18,11 @@ export const UserContainer = styled.div`
 `;
 
 export const UserImg = styled.div<UserImgProps>`
-  background: ${(props) => props.src || "black"};
   width: 32px;
   height: 32px;
   border-radius: 8px;
+  background: ${({ src }) => (src ? `url(${src})` : "black")};
+  background-size: cover;
 `;
 
 export const UserName = styled.div`

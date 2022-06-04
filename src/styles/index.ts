@@ -92,6 +92,9 @@ export const Button = styled.button<ButtonProps>`
   transition: 200ms;
   cursor: pointer;
 
+  display: flex;
+  justify-content: center;
+
   margin-top: ${(props) => props.mt + "px" || ""};
   margin-bottom: ${(props) => props.mb + "px" || ""};
 

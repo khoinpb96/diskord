@@ -100,7 +100,7 @@ export const ProfileContentPhoto = styled(ProfileContent)`
   gap: ${(props) => props.editing && "27.5px"};
 
   .photo {
-    background: ${(props) => (props.src ? `url(${props.src})` : "black")};
+    background: ${(props) => `url(${props.src})`};
     background-repeat: no-repeat;
     background-size: cover;
     width: 72px;

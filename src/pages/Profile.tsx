@@ -29,8 +29,9 @@ export default function Profile() {
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const bioInputRef = useRef<HTMLInputElement>(null);
-  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const fullNameInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const { id, accessToken } = getUserDataFromLocalStorage();
   const { user, login } = useAuth();
 
@@ -45,7 +46,6 @@ export default function Profile() {
         const { data } = await UserAPI.get(`/${id}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-
         login(data);
       } catch (err: any) {
         console.log(err.response?.data?.message);
@@ -58,7 +58,7 @@ export default function Profile() {
 
   const saveHandler = async () => {
     const updateInfo = {
-      username: usernameInputRef?.current?.value,
+      fullName: fullNameInputRef?.current?.value,
       password: passwordInputRef?.current?.value,
       phone: phoneInputRef?.current?.value,
       email: emailInputRef?.current?.value,
@@ -85,7 +85,7 @@ export default function Profile() {
         <EditButton onClick={() => setIsEditing(true)}>Edit</EditButton>
       </ProfileHeader>
       <ProfileRow>
-        <ProfileContentPhoto>
+        <ProfileContentPhoto src={user.photoUrl || "black"}>
           <div className="title">photo</div>
           <div className="photo" />
         </ProfileContentPhoto>
@@ -94,7 +94,7 @@ export default function Profile() {
       <ProfileRow>
         <ProfileContent>
           <div className="title">name</div>
-          <div className="content">{user.username}</div>
+          <div className="content">{user.fullName}</div>
         </ProfileContent>
       </ProfileRow>
       <ProfileRow>
@@ -141,7 +141,6 @@ export default function Profile() {
             editing={isEditing}
             src={user.photoUrl || ""}
             onClick={() => {
-              console.log("click");
               fileInputRef.current?.click();
             }}
           >
@@ -164,10 +163,10 @@ export default function Profile() {
           <ProfileInputContainer>
             <div className="title">name</div>
             <EditInput
-              ref={usernameInputRef}
+              ref={fullNameInputRef}
               type="text"
               placeholder="Enter your new name..."
-              defaultValue={user.username}
+              defaultValue={user.fullName}
             />
           </ProfileInputContainer>
         </ProfileRow>

@@ -6,10 +6,7 @@ import {
   UserName,
 } from "../styles/Header.style";
 import Dropdown from "./Dropdown";
-
-import { HeaderProps } from "../types";
 import logo from "../assets/devchallenges-logo.svg";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../styles";
@@ -25,6 +22,7 @@ export default function Header() {
   };
 
   const navigate = useNavigate();
+
   const logoClickHandler = () => {
     auth.logout();
     navigate("/");
@@ -34,8 +32,8 @@ export default function Header() {
     <HeaderContainer>
       <Logo src={logo} onClick={logoClickHandler} />
       <UserContainer onClick={dropdownClickHandler}>
-        <UserImg src={user.photoUrl || ""} />
-        <UserName>{user.username || "NAME"}</UserName>
+        <UserImg src={user.photoUrl} />
+        <UserName>{user.username || "USER"}</UserName>
         <DropdownButton className="fa-solid fa-caret-down" />
         {dropdownIsOpen && <Dropdown />}
       </UserContainer>
