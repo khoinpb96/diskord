@@ -8,12 +8,12 @@ import {
   StyledLink,
 } from "../common";
 import DotsLoading from "../DotsLoading/DotsLoading";
-import CustomFormInput from "../FormInput/FormInput";
 import { Button } from "../index";
 
 const LoginForm = () => {
-  const initInput = { username: "", password: "" };
-  const [input, setInput] = useState(initInput);
+  const [input, setInput] = useState({ username: "", password: "" });
+
+  const isValidInput = input.username.length >= 6 && input.password.length >= 6;
 
   const handleUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((input) => ({ ...input, username: e.target.value }));
@@ -27,8 +27,6 @@ const LoginForm = () => {
     e.preventDefault();
     console.log("form submitted");
   };
-
-  const isValidInput = input.username.length > 6 && input.password.length > 6;
 
   return (
     <PageForm onSubmit={handleFormSubmit}>
@@ -63,9 +61,5 @@ const LoginForm = () => {
     </PageForm>
   );
 };
-
-const ErrorMessage = styled.div`
-  color: #f38688;
-`;
 
 export default LoginForm;

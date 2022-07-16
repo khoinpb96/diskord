@@ -14,8 +14,21 @@ const RegisterForm = () => {
     e.preventDefault();
     console.log("login form submitted");
   };
-  const [input, setInput] = useState({ username: "", password: "" });
-  const [error, setError] = useState({ username: "", password: "" });
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const passwordsAreMatched = input.password === input.confirmPassword;
+
+  const isValidInput =
+    input.username.length >= 6 &&
+    input.password.length >= 6 &&
+    passwordsAreMatched;
+
+  console.log("passwordsAreMatched:", passwordsAreMatched);
+  console.log("isValidInput:", isValidInput);
 
   const handleUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((input) => ({ ...input, username: e.target.value }));
@@ -23,6 +36,12 @@ const RegisterForm = () => {
 
   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((input) => ({ ...input, password: e.target.value }));
+  };
+
+  const handleConfirmPasswordInput = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInput((input) => ({ ...input, confirmPassword: e.target.value }));
   };
 
   return (
@@ -33,19 +52,29 @@ const RegisterForm = () => {
 
       <div className="mb20">
         <FormLabel>Username</FormLabel>
-        <FormInput />
+        <FormInput value={input.username} onChange={handleUsernameInput} />
       </div>
 
       <div className="mb20">
         <FormLabel>Password</FormLabel>
-        <FormInput type="password" />
+        <FormInput
+          value={input.password}
+          type="password"
+          onChange={handlePasswordInput}
+        />
       </div>
       <div className="mb20">
         <FormLabel>Confirm Password</FormLabel>
-        <FormInput type="password" />
+        <FormInput
+          value={input.confirmPassword}
+          type="password"
+          onChange={handleConfirmPasswordInput}
+        />
       </div>
 
-      <Button className="mb8">Register</Button>
+      <Button disabled={!isValidInput} className="mb8">
+        Register
+      </Button>
 
       <StyledLink to="/login">Already have an account?</StyledLink>
 
