@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./context";
-import NotfoundPage from "./pages/NotfoundPage/NotfoundPage";
+import { AuthProvider } from "./utils/context";
+import { NotfoundPage } from "./pages";
 
 function App() {
   return (

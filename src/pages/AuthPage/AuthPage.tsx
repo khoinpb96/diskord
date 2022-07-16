@@ -3,13 +3,12 @@ import React, { useEffect, useId, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthAPI } from "../../api";
-import { Socials } from "../../components";
 import Button from "../../components/Button/Button";
 import FormInput from "../../components/FormInput/FormInput";
 import Spinner from "../../components/Spinner";
-import config from "../../config";
-import { useInput } from "../../hooks";
-import { showUp } from "../../utils/mixin";
+import config from "../../utils/config";
+import { useInput } from "../../utils/hooks";
+import { showUp } from "../../styles/mixin";
 
 export default function AuthPage() {
   // const [isLoginStage, setIsLoginStage] = useState(true);
