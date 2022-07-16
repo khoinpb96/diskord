@@ -6,7 +6,6 @@ import {
   UserName,
 } from "../styles/Header.style";
 import Dropdown from "./Dropdown";
-import logo from "../assets/devchallenges-logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Logo } from "../styles";
@@ -30,7 +29,6 @@ export default function Header() {
 
   return (
     <HeaderContainer>
-      <Logo src={logo} onClick={logoClickHandler} />
       <UserContainer onClick={dropdownClickHandler}>
         <UserImg src={user.photoUrl} />
         <UserName>{user.username || "USER"}</UserName>
