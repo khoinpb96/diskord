@@ -11,7 +11,7 @@ import config from "../../config";
 import { useInput } from "../../hooks";
 import { showUp } from "../../utils/mixin";
 
-export default function LoginPage() {
+export default function AuthPage() {
   // const [isLoginStage, setIsLoginStage] = useState(true);
   // const [isLoading, setIsLoading] = useState(false);
 
@@ -94,8 +94,6 @@ export default function LoginPage() {
 
   return (
     <LoginPageWrapper>
-      <Navigate to="/login" replace={true} />
-
       <LoginPageForm onSubmit={handleLoginSubmit}>
         <div className="header mb20">
           <h3>Welcome back!</h3>
