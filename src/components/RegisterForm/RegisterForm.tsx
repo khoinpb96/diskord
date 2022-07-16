@@ -1,11 +1,28 @@
-import React from "react";
-import { PageForm, PageQuestionSignup, StyledLink } from "../common";
-import { Button, FormInput } from "../index";
+import React, { useState } from "react";
+import {
+  FormInput,
+  FormLabel,
+  PageForm,
+  PageQuestionSignup,
+  StyledLink,
+} from "../common";
+import DotsLoading from "../DotsLoading/DotsLoading";
+import { Button } from "../index";
 
 const RegisterForm = () => {
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("login form submitted");
+  };
+  const [input, setInput] = useState({ username: "", password: "" });
+  const [error, setError] = useState({ username: "", password: "" });
+
+  const handleUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput((input) => ({ ...input, username: e.target.value }));
+  };
+
+  const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput((input) => ({ ...input, password: e.target.value }));
   };
 
   return (
@@ -14,13 +31,19 @@ const RegisterForm = () => {
         <h3>Create an accout</h3>
       </div>
 
-      <FormInput label="Email" className="mb20" />
-      <FormInput label="Password" type="password" className="mb20" />
-      <FormInput
-        label="Confirm you password"
-        type="password"
-        className="mb20"
-      />
+      <div className="mb20">
+        <FormLabel>Username</FormLabel>
+        <FormInput />
+      </div>
+
+      <div className="mb20">
+        <FormLabel>Password</FormLabel>
+        <FormInput type="password" />
+      </div>
+      <div className="mb20">
+        <FormLabel>Confirm Password</FormLabel>
+        <FormInput type="password" />
+      </div>
 
       <Button className="mb8">Register</Button>
 

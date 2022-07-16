@@ -1,23 +1,34 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 type FormInputProps = {
-  label?: string;
+  label: string;
   type?: string;
   className?: string;
 };
 
-const FormInput: React.FC<FormInputProps> = ({
+const CustomFormInput: React.FC<FormInputProps> = ({
   label,
   type = "text",
   className,
 }) => {
+  const [input, setInput] = useState("");
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
   return (
-    <div className={className}>
+    <InputContainer className={className}>
       <Label>{label}</Label>
-      <Input type={type} />
-    </div>
+      <Input type={type} value={input} onChange={handleOnChange} />
+    </InputContainer>
   );
 };
+
+const InputContainer = styled.div`
+  margin: 20px 0;
+`;
 
 const Label = styled.h5`
   margin-bottom: 8px;
@@ -45,4 +56,4 @@ const Input = styled.input`
   background-color: #202225;
 `;
 
-export default FormInput;
+export default CustomFormInput;
