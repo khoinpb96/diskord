@@ -66,14 +66,18 @@ const PageQuestionSignup = styled.div`
   margin-top: 4px;
 `;
 
-const FormLabel = styled.h5`
+type FormLabelProps = {
+  isInvalid?: boolean;
+};
+
+const FormLabel = styled.h5<FormLabelProps>`
   margin-bottom: 8px;
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;
   text-transform: uppercase;
 
-  color: #b9bbbe;
+  color: ${({ isInvalid }) => (isInvalid ? "#f38688" : " #b9bbbe")};
 `;
 
 const FormInput = styled.input`
@@ -92,4 +96,16 @@ const FormInput = styled.input`
   background-color: #202225;
 `;
 
-export { StyledLink, PageForm, PageQuestionSignup, FormLabel, FormInput };
+const ErrorMessage = styled.div`
+  display: inline;
+  text-transform: capitalize;
+`;
+
+export {
+  StyledLink,
+  PageForm,
+  PageQuestionSignup,
+  FormLabel,
+  FormInput,
+  ErrorMessage,
+};

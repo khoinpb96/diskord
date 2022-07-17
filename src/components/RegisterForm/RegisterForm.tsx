@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import useRegister from "../../utils/hooks/useRegister";
 import {
+  ErrorMessage,
   FormInput,
   FormLabel,
   PageForm,
@@ -10,25 +14,43 @@ import DotsLoading from "../DotsLoading/DotsLoading";
 import { Button } from "../index";
 
 const RegisterForm = () => {
-  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("login form submitted");
-  };
+  const navigate = useNavigate();
   const [input, setInput] = useState({
     username: "",
     password: "",
     confirmPassword: "",
   });
+  const [registerFunc, { loading, error }] = useRegister({
+    username: input.username,
+    password: input.password,
+  });
 
+  const whitespaceRegex = /\s/g;
   const passwordsAreMatched = input.password === input.confirmPassword;
 
   const isValidInput =
     input.username.length >= 6 &&
     input.password.length >= 6 &&
+    !input.password.match(whitespaceRegex) &&
+    !input.confirmPassword.match(whitespaceRegex) &&
     passwordsAreMatched;
 
-  console.log("passwordsAreMatched:", passwordsAreMatched);
-  console.log("isValidInput:", isValidInput);
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!passwordsAreMatched) {
+      console.log("passwords are not matched");
+    }
+
+    try {
+      const { data } = await registerFunc();
+      const token = data.register.token;
+      localStorage.setItem("accessToken", token);
+      navigate("/channels");
+    } catch (error: any) {
+      console.log(error.message);
+      return;
+    }
+  };
 
   const handleUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((input) => ({ ...input, username: e.target.value }));
@@ -51,7 +73,12 @@ const RegisterForm = () => {
       </div>
 
       <div className="mb20">
-        <FormLabel>Username</FormLabel>
+        <FormLabel isInvalid={error?.message === "User existed"}>
+          Username
+          {error?.message === "User existed" && (
+            <ErrorMessage> - {error?.message}</ErrorMessage>
+          )}
+        </FormLabel>
         <FormInput value={input.username} onChange={handleUsernameInput} />
       </div>
 
@@ -73,7 +100,7 @@ const RegisterForm = () => {
       </div>
 
       <Button disabled={!isValidInput} className="mb8">
-        Register
+        {loading ? <DotsLoading /> : "Register"}
       </Button>
 
       <StyledLink to="/login">Already have an account?</StyledLink>

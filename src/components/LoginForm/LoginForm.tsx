@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useLogin from "../../utils/hooks/useLogin";
 import {
+  ErrorMessage,
   FormInput,
   FormLabel,
   PageForm,
@@ -12,8 +15,11 @@ import { Button } from "../index";
 
 const LoginForm = () => {
   const [input, setInput] = useState({ username: "", password: "" });
+  const [loginFunc, { loading, error }] = useLogin(input);
 
-  const isValidInput = input.username.length >= 6 && input.password.length >= 6;
+  const navigate = useNavigate();
+  const isValidInput =
+    input.username.trim().length >= 6 && input.password.trim().length >= 6;
 
   const handleUsernameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((input) => ({ ...input, username: e.target.value }));
@@ -23,10 +29,25 @@ const LoginForm = () => {
     setInput((input) => ({ ...input, password: e.target.value }));
   };
 
-  const handleFormSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("form submitted");
+
+    try {
+      const { data } = await loginFunc();
+      const token = data.login.accessToken;
+      localStorage.setItem("accessToken", token);
+      navigate("/channels");
+    } catch (error: any) {
+      return console.log(error.message);
+    }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      navigate("/channels");
+    }
+  }, []);
 
   return (
     <PageForm onSubmit={handleFormSubmit}>
@@ -36,12 +57,22 @@ const LoginForm = () => {
       </div>
 
       <div className="mb20">
-        <FormLabel>Username</FormLabel>
+        <FormLabel isInvalid={error?.message == "Wrong username"}>
+          Username
+          {error?.message == "Wrong username" && (
+            <ErrorMessage> - {error?.message}</ErrorMessage>
+          )}
+        </FormLabel>
         <FormInput value={input.username} onChange={handleUsernameInput} />
       </div>
 
       <div>
-        <FormLabel>Password</FormLabel>
+        <FormLabel isInvalid={error?.message == "Wrong password"}>
+          Password
+          {error?.message == "Wrong password" && (
+            <ErrorMessage> - {error?.message}</ErrorMessage>
+          )}
+        </FormLabel>
         <FormInput
           type="password"
           value={input.password}
@@ -53,7 +84,9 @@ const LoginForm = () => {
         <StyledLink to="#">Forgot your password?</StyledLink>
       </div>
 
-      <Button disabled={!isValidInput}>Login</Button>
+      <Button disabled={!isValidInput}>
+        {loading ? <DotsLoading /> : "Login"}
+      </Button>
 
       <PageQuestionSignup>
         Need an account? <StyledLink to="/register">Register</StyledLink>
