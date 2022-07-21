@@ -66,10 +66,13 @@ const NavListItemWrapper = styled.div`
     opacity: 1;
     transform: scale(1);
     right: -6rem;
+    z-index: 999;
+    visibility: visible;
   }
 
   .tooltip {
     position: absolute;
+    visibility: hidden;
 
     background-color: #18191c;
     color: #ffffffeb;
@@ -86,6 +89,7 @@ const NavListItemWrapper = styled.div`
     transform: scale(0.9);
     right: -5.6rem;
 
+    white-space: nowrap;
     transition: 0.1s ease-out;
 
     &::after {

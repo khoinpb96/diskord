@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { LoginForm, RegisterForm } from "./components";
-import { AuthPage, NotfoundPage } from "./pages";
-import ChannelsPage from "./pages/ChannelsPage/ChannelsPage";
+import { AuthPage, NotfoundPage, ChannelsPage } from "./pages";
 import { AuthProvider } from "./utils/context";
 
 function App() {
@@ -12,7 +11,9 @@ function App() {
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
         </Route>
+
         <Route path="/channels" element={<ChannelsPage />}></Route>
+
         <Route path="*" element={<NotfoundPage />} />
       </Routes>
     </AuthProvider>
