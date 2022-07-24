@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import useRegister from "../../utils/hooks/useRegister";
+
+import { useRegister } from "../../utils/hooks";
 import {
   ErrorMessage,
   FormInput,
