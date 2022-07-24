@@ -1,22 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 import { LoginForm, RegisterForm } from "./components";
 import { AuthPage, NotfoundPage, ChannelsPage } from "./pages";
-import { AuthProvider } from "./utils/context";
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={<AuthPage />}>
-          <Route path="login" element={<LoginForm />} />
-          <Route path="register" element={<RegisterForm />} />
-        </Route>
+    <Routes>
+      <Route path="/" element={<AuthPage />}>
+        <Route path="login" element={<LoginForm />} />
+        <Route path="register" element={<RegisterForm />} />
+      </Route>
 
-        <Route path="/channels" element={<ChannelsPage />}></Route>
+      <Route path="/channels" element={<ChannelsPage />}></Route>
 
-        <Route path="*" element={<NotfoundPage />} />
-      </Routes>
-    </AuthProvider>
+      <Route path="*" element={<NotfoundPage />} />
+    </Routes>
   );
 }
 

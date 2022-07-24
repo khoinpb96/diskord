@@ -66,7 +66,7 @@ const NavListItemWrapper = styled.div`
     opacity: 1;
     transform: scale(1);
     right: -6rem;
-    z-index: 999;
+    z-index: 1;
     visibility: visible;
   }
 

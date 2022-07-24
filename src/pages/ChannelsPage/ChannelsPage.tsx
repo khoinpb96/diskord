@@ -143,7 +143,7 @@ const ChannelsPage = () => {
       </Wrapper>
 
       {settingPopup && (
-        <Layer>
+        <Layer index={1}>
           <UserSettingPopup>
             <UserSettingPopopSidebarWrapper>
               <UserSettingPopopSidebar>
@@ -254,7 +254,7 @@ const ChannelsPage = () => {
       )}
 
       {deleteAccountPopup && (
-        <Layer>
+        <Layer index={2}>
           <DeleteAccountPopupModal>
             <DeleteAccountPopup>
               <h2>Delete Account</h2>
@@ -425,7 +425,7 @@ const PanelButtons = styled.div`
       transform: scale(1);
       top: -40px;
 
-      z-index: 999;
+      z-index: 1;
       visibility: visible;
     }
   }
@@ -579,11 +579,13 @@ const Wrapper = styled.main`
   overflow: hidden;
 `;
 
-const Layer = styled.div`
+const Layer = styled.div<{ index?: number }>`
   inset: 0;
   position: absolute;
   transition: 100ms ease-out;
   overflow: hidden;
+
+  z-index: ${({ index }) => index};
 `;
 
 const UserSettingPopup = styled.div`
@@ -1048,6 +1050,8 @@ const InviteButtonIcon = styled.div`
   align-items: center;
   justify-content: center;
 
+  z-index: 1;
+
   .tooltip {
     position: absolute;
     visibility: hidden;
@@ -1090,7 +1094,7 @@ const InviteButtonIcon = styled.div`
     transform: scale(1);
     top: -40px;
 
-    z-index: 999;
+    z-index: 1;
     visibility: visible;
   }
 `;
