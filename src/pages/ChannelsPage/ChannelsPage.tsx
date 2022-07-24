@@ -4,6 +4,16 @@ import styled from "styled-components";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { NavLink } from "react-router-dom";
 
+import plusIconUrl from "../../assets/plus-btn.svg";
+import friendsIconUrl from "../../assets/friends-icon.svg";
+import panelIconMuteUrl from "../../assets/panel-icon-mute.svg";
+import panelIconDeafenUrl from "../../assets/panel-icon-deafen.svg";
+import panelIconSettingUrl from "../../assets/panel-icon-setting.svg";
+import friendsEmptyIlluUrl from "../../assets/friends-empty-illu.svg";
+import logoutIconUrl from "../../assets/logout-icon.svg";
+import closeIconUrl from "../../assets/close-icon.svg";
+import userInitAvaUrl from "../../assets/user.png";
+
 const ChannelsPage = () => {
   const navigate = useNavigate();
   const [tabSelected, setTabSelected] = useState("my-account");
@@ -62,7 +72,7 @@ const ChannelsPage = () => {
 
               <Channels>
                 <Channel to="@me">
-                  <img src="/assets/friends-icon.svg" />
+                  <img src={friendsIconUrl} />
                   Friends
                 </Channel>
               </Channels>
@@ -78,7 +88,7 @@ const ChannelsPage = () => {
 
             <PanelWrapper>
               <PanelAvatarWrapper>
-                <PanelAvatar src="https://cdn.discordapp.com/avatars/872311964569837658/bf10ee0eda3d383e3f963c50dbf059a4.webp?size=48" />
+                <PanelAvatar src={userInitAvaUrl} />
               </PanelAvatarWrapper>
               <PanelNameTag>
                 <div className="username">kilian</div>
@@ -90,15 +100,15 @@ const ChannelsPage = () => {
 
               <PanelButtons>
                 <button>
-                  <img src="/assets/panel-icon-mute.svg" />
+                  <img src={panelIconMuteUrl} />
                   <div className="tooltip">Unmute</div>
                 </button>
                 <button>
-                  <img src="/assets/panel-icon-deafen.svg" />
+                  <img src={panelIconDeafenUrl} />
                   <div className="tooltip">Deafen</div>
                 </button>
                 <button onClick={openSettingPopup}>
-                  <img src="/assets/panel-icon-setting.svg" />
+                  <img src={panelIconSettingUrl} />
                   <div className="tooltip">User Setting</div>
                 </button>
               </PanelButtons>
@@ -132,7 +142,7 @@ const ChannelsPage = () => {
               </PeopleCol>
 
               <FriendsEmpty>
-                <img src="/assets/friends-empty-illu.svg" />
+                <img src={friendsEmptyIlluUrl} />
                 <div>
                   Wumpus is waiting on friends. You don't have to though!
                 </div>
@@ -187,7 +197,7 @@ const ChannelsPage = () => {
                 <div className="item">HypeSquad</div>
                 <Seperator />
                 <div className="item" onClick={handleLogoutButton}>
-                  Log out <img src="/assets/logout-icon.svg" />
+                  Log out <img src={logoutIconUrl} />
                 </div>
                 <Seperator />
                 <div className="info">Make by K</div>
@@ -197,7 +207,7 @@ const ChannelsPage = () => {
             <UserSettingPopopContentWrapper>
               <UserSettingPopopContent>
                 <CloseSettingPopupButton onClick={closeSettingPopup}>
-                  <img src="/assets/close-icon.svg" />
+                  <img src={closeIconUrl} />
                   ESC
                 </CloseSettingPopupButton>
 
@@ -255,7 +265,7 @@ const ChannelsPage = () => {
 
       {deleteAccountPopup && (
         <Layer index={2}>
-          <DeleteAccountPopupModal>
+          <DeleteAccountPopupModal onClick={closeDeleteAccountPopup}>
             <DeleteAccountPopup>
               <h2>Delete Account</h2>
 
@@ -768,7 +778,9 @@ const AccountProfileCardUserInfo = styled.div`
     height: 80px;
 
     border: 7px solid #202225;
-    background-color: #202225;
+    background-image: url(${userInitAvaUrl});
+    background-size: cover;
+
     border-radius: 50%;
 
     position: absolute;
@@ -1037,7 +1049,7 @@ const PrivateChannelsHeaderContainer = styled.div`
 `;
 
 const InviteButtonIcon = styled.div`
-  background-image: url("/assets/plus-btn.svg");
+  background-image: url(${plusIconUrl});
   background-size: cover;
 
   filter: grayscale(1);

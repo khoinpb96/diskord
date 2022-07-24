@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import homeIconUrl from "../../assets/icon-logo.svg";
+
 const Sidebar = () => {
   return (
     <Nav>
@@ -7,7 +9,7 @@ const Sidebar = () => {
         <NavListItemWrapper role="treeitem">
           <div className="pill" />
           <NavListItem role="home-item">
-            <img src="/assets/icon-logo.svg" />
+            <img src={homeIconUrl} />
           </NavListItem>
           <div className="tooltip">Home</div>
         </NavListItemWrapper>
