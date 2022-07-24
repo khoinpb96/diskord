@@ -1,2 +1,3 @@
-export { default as Main } from "./Main";
-export { default as Socials } from "./Socials";
+export { default as Button } from "./Button/Button";
+export { default as LoginForm } from "./LoginForm/LoginForm";
+export { default as RegisterForm } from "./RegisterForm/RegisterForm";
