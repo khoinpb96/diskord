@@ -13,12 +13,18 @@ import friendsEmptyIlluUrl from "../../assets/friends-empty-illu.svg";
 import logoutIconUrl from "../../assets/logout-icon.svg";
 import closeIconUrl from "../../assets/close-icon.svg";
 import userInitAvaUrl from "../../assets/user.png";
+import useGetUser from "../../utils/hooks/useGetUser";
 
 const ChannelsPage = () => {
   const navigate = useNavigate();
   const [tabSelected, setTabSelected] = useState("my-account");
   const [settingPopup, setSettingPopup] = useState(false);
   const [deleteAccountPopup, setDeleteAccountPopup] = useState(false);
+
+  const token = localStorage.getItem("accessToken") || "";
+  const { data, loading } = useGetUser(token);
+
+  console.log(data?.user);
 
   const handleLogoutButton = () => {
     localStorage.removeItem("accessToken");
@@ -41,12 +47,6 @@ const ChannelsPage = () => {
     setDeleteAccountPopup(false);
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
-      navigate("/", { replace: true });
-    }
-  }, []);
-
   const [usernameInput, setUsernameInput] = useState("");
 
   const handleUsernameInputChange = (
@@ -58,6 +58,15 @@ const ChannelsPage = () => {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  // useEffect(() => {
+  //   if (!localStorage.getItem("accessToken")) {
+  //     navigate("/", { replace: true });
+  //   }
+
+  // }, []);
+
+  if (loading) return <>Loading...</>;
 
   return (
     <>
@@ -91,7 +100,7 @@ const ChannelsPage = () => {
                 <PanelAvatar src={userInitAvaUrl} />
               </PanelAvatarWrapper>
               <PanelNameTag>
-                <div className="username">kilian</div>
+                <div className="username">{data?.user.username}</div>
                 <div className="status">
                   <div className="default">love Mint!</div>
                   <div className="hovered">#1996</div>
@@ -218,7 +227,7 @@ const ChannelsPage = () => {
 
                   <AccountProfileCardUserInfo>
                     <div className="avatar" />
-                    <div className="name">kilian</div>
+                    <div className="name">{data?.user.username}</div>
                     <button>Edit User Profile</button>
                   </AccountProfileCardUserInfo>
 
@@ -227,23 +236,23 @@ const ChannelsPage = () => {
                       <div className="field">
                         <div className="field-col">
                           <h5>Username</h5>
-                          <div>kilian</div>
+                          <div>{data?.user.username}</div>
                         </div>
                         <button>Edit</button>
                       </div>
                       <div className="field">
                         <div className="field-col">
                           <h5>Email</h5>
-                          <div> </div>
+                          <div>{data?.user.email}</div>
                         </div>
-                        <button>Add</button>
+                        <button>Edit</button>
                       </div>
                       <div className="field">
                         <div className="field-col">
                           <h5>Phone Number</h5>
-                          <div> </div>
+                          <div>{data?.user.phoneNumber}</div>
                         </div>
-                        <button>Add</button>
+                        <button>Edit</button>
                       </div>
                     </FieldList>
                   </AccountProfileCardBackground>
@@ -1156,6 +1165,7 @@ const PeopleCol = styled.div`
   header {
     padding: 20px 30px;
     border-bottom: 1px solid rgba(79, 84, 92, 0.48);
+    min-width: 450px;
 
     h2 {
       margin-bottom: 8px;

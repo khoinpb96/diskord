@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { LoginForm, RegisterForm } from "./components";
 import { AuthPage, NotfoundPage, ChannelsPage } from "./pages";
 

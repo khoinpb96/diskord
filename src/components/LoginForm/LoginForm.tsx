@@ -16,7 +16,6 @@ import { Button } from "../index";
 const LoginForm = () => {
   const [input, setInput] = useState({ username: "", password: "" });
   const [loginFunc, { loading, error }] = useLogin(input);
-
   const navigate = useNavigate();
   const isValidInput =
     input.username.trim().length >= 6 && input.password.trim().length >= 6;
