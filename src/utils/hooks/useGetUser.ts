@@ -10,7 +10,9 @@ const GET_USER_QUERY = gql`
   }
 `;
 
-const useGetUser = (token: string) => {
+const useGetUser = () => {
+  const token = localStorage.getItem("accessToken") || "";
+
   return useQuery(GET_USER_QUERY, {
     context: {
       headers: { authorization: `Bearer ${token}` },

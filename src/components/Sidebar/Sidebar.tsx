@@ -20,7 +20,7 @@ const Sidebar = () => {
 };
 
 const Nav = styled.nav`
-  width: 72px;
+  min-width: 72px;
   background-color: #202225;
 `;
 
