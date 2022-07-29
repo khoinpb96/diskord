@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import logoUrl from "../../assets/logo.svg";
+import NotFountGifUrl from "../../assets/404.gif";
+
 const NotfoundPage = () => {
   return (
     <NotfoundPageWrapper>
       <Header>
         <Link to="/">
-          <Logo src="/assets/logo.svg" />
+          <Logo src={logoUrl} />
         </Link>
 
         <LoginButton to="/login">Login</LoginButton>
@@ -40,7 +43,7 @@ const NotfoundPage = () => {
           </OutLinks>
         </Content>
 
-        <Gif src="/assets/404.gif" />
+        <Gif src={NotFountGifUrl} />
       </Row>
     </NotfoundPageWrapper>
   );
