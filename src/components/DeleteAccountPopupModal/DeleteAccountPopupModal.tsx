@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useDeleteUser from "../../utils/hooks/useDeleteUser";
+import DotsLoading from "../DotsLoading/DotsLoading";
 import Modal from "../Modal/Modal";
 import ModalCard from "../ModalCard/ModalCard";
 
@@ -10,8 +13,30 @@ type DeleteAccountPopupModalProps = {
 const DeleteAccountPopupModal: React.FC<DeleteAccountPopupModalProps> = ({
   closePopupFn,
 }) => {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const [deleteUser, { loading }] = useDeleteUser(password);
+  const navigate = useNavigate();
+
+  const handleFormSubmit = async () => {
+    try {
+      await deleteUser();
+      localStorage.removeItem("accessToken");
+      navigate("/", { replace: true });
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const handlePasswordInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPassword(e.target.value);
+  };
+
   return (
-    <Modal onClick={closePopupFn}>
+    <Modal>
       <DeleteAccountPopup>
         <h2>Delete Account</h2>
 
@@ -23,25 +48,53 @@ const DeleteAccountPopupModal: React.FC<DeleteAccountPopupModalProps> = ({
 
         <div className="confirm">
           <h5>Password</h5>
-          <input type="password" />
+          <input
+            type="password"
+            onChange={handlePasswordInputChange}
+            value={password}
+          />
+
+          {error && <ErrorMessage>{error}</ErrorMessage>}
         </div>
 
         <div className="footer">
           <button className="cancel-btn" onClick={closePopupFn}>
             Cancel
           </button>
-          <button className="confirm-btn">Delete Account</button>
+          <button className="confirm-btn" onClick={handleFormSubmit}>
+            {loading ? <DotsLoading /> : "Delete Account"}
+          </button>
         </div>
       </DeleteAccountPopup>
     </Modal>
   );
 };
 
+const ErrorMessage = styled.div`
+  color: #f38688;
+
+  margin-top: 8px;
+  margin-left: 1px;
+
+  font-size: 12px;
+  font-weight: 400;
+`;
+
 const DeleteAccountPopup = styled(ModalCard)`
   h2 {
     padding: 1rem;
     font-size: 20px;
     color: #fff;
+  }
+
+  .warning-card {
+    background-color: #faa81a;
+    color: #fff;
+
+    margin: 0 1rem;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
   }
 
   .confirm {

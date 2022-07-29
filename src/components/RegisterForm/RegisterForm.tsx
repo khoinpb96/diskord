@@ -35,16 +35,12 @@ const RegisterForm = () => {
     !input.confirmPassword.match(whitespaceRegex) &&
     passwordsAreMatched;
 
-  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!passwordsAreMatched) {
-      console.log("passwords are not matched");
-    }
 
     try {
       const { data } = await registerFunc();
-      const token = data.register.token;
-      localStorage.setItem("accessToken", token);
+      localStorage.setItem("accessToken", data.register.accessToken);
       navigate("/channels");
     } catch (error: any) {
       console.log(error.message);
@@ -67,7 +63,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <PageForm onSubmit={handleLoginSubmit}>
+    <PageForm onSubmit={handleRegisterSubmit}>
       <div className="header mb20">
         <h3>Create an accout</h3>
       </div>
