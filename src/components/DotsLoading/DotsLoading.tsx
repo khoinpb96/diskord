@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const DotsLoading = () => {
   return (
-    <StyledLoading>
+    <StyledLoading data-testid="dots-loading">
       <div className="dot1 dot" />
       <div className="dot2 dot" />
       <div className="dot3 dot" />

@@ -170,7 +170,7 @@ const UserSettingPopup: React.FC<UserSettingPopupProps> = ({
 
       {editMode && (
         <Layer index={2}>
-          <Modal onClick={(e) => closeEditPopup}>
+          <Modal>
             <EditAccountPopup>
               <form onSubmit={handleEditUserFormSubmit}>
                 <h2>
