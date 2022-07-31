@@ -1,6 +1,6 @@
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { showUp } from "../../styles/mixin";
 
 const StyledLink = styled(Link)`
   color: #00aff4;
@@ -13,7 +13,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const PageForm = styled.form`
+const PageForm = styled(motion.form)`
   padding: 32px;
   background-color: #36393f;
   color: white;
@@ -23,8 +23,6 @@ const PageForm = styled.form`
 
   box-shadow: 0 2px 10px 0 rgb(0 0 0 / 20%);
   border-radius: 4px;
-
-  ${showUp()}
 
   .mb20 {
     margin-bottom: 20px;

@@ -1,17 +1,18 @@
+import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import friendsEmptyIlluUrl from "../../assets/friends-empty-illu.svg";
 import friendsIconUrl from "../../assets/friends-icon.svg";
-import useGetUser from "../../utils/hooks/useGetUser";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import DeleteAccountPopup from "../../components/DeleteAccountPopup/DeleteAccountPopup";
 import Layer from "../../components/Layer/Layer";
 import Panel from "../../components/Panel/Panel";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import UserSettingPopup from "../../components/UserSettingPopup/UserSettingPopup";
+import useGetUser from "../../utils/hooks/useGetUser";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import {
   AddFriendWrapper,
+  Background,
   Base,
   BaseContent,
   BaseSideBar,
@@ -63,9 +64,18 @@ const ChannelsPage = () => {
 
   if (loading) return <LoadingPage />;
 
+  const variants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    show: { opacity: 1 },
+  };
+
   return (
-    <>
-      <Wrapper>
+    <Background>
+      <Wrapper
+        variants={variants}
+        animate={settingPopup ? "hidden" : "show"}
+        transition={{ ease: "easeInOut", duration: 0.2 }}
+      >
         <Sidebar />
         <Base>
           <BaseSideBar>
@@ -130,16 +140,18 @@ const ChannelsPage = () => {
         </Base>
       </Wrapper>
 
-      {settingPopup && (
-        <Layer index={1}>
-          <UserSettingPopup
-            data={data.user}
-            refetch={refetch}
-            closePopupFn={closeSettingPopup}
-          />
-        </Layer>
-      )}
-    </>
+      <AnimatePresence>
+        {settingPopup && (
+          <Layer index={1}>
+            <UserSettingPopup
+              data={data.user}
+              refetch={refetch}
+              closePopupFn={closeSettingPopup}
+            />
+          </Layer>
+        )}
+      </AnimatePresence>
+    </Background>
   );
 };
 

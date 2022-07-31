@@ -1,9 +1,15 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 import plusIconUrl from "../../assets/plus-btn.svg";
 
-export const Wrapper = styled.main`
+export const Background = styled.div`
+  background-color: #202225;
+  overflow: hidden;
+`;
+
+export const Wrapper = styled(motion.div)`
   min-height: 100vh;
   display: flex;
   position: relative;

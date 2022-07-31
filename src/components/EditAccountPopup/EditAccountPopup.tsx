@@ -50,8 +50,18 @@ const EditAccountPopup: React.FC<any> = ({ data, closePopupFn, refetch }) => {
   };
 
   return (
-    <Modal>
-      <Popup>
+    <Modal
+      initial={{ background: "rgba(0, 0, 0, 0)" }}
+      animate={{ background: "rgba(0, 0, 0, 0.85)" }}
+      exit={{ background: "rgba(0, 0, 0, 0)" }}
+      transition={{ ease: "easeInOut", duration: 0.2 }}
+    >
+      <Popup
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ ease: "easeInOut", duration: 0.2 }}
+      >
         <form onSubmit={handleEditUserFormSubmit}>
           <h2>
             Edit Account

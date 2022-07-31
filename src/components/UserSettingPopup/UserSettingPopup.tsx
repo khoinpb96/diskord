@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -48,7 +49,12 @@ const UserSettingPopup: React.FC<UserSettingPopupProps> = ({
   };
 
   return (
-    <UserSettingPopupWrapper>
+    <UserSettingPopupWrapper
+      initial={{ opacity: 0, scale: 1.2 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 1.1 }}
+      transition={{ ease: "easeInOut", duration: 0.2 }}
+    >
       <UserSettingPopopSidebarWrapper>
         <UserSettingPopopSidebar>
           <div className="header">user settings</div>
@@ -144,44 +150,31 @@ const UserSettingPopup: React.FC<UserSettingPopupProps> = ({
         </UserSettingPopopContent>
       </UserSettingPopopContentWrapper>
 
-      {editMode && (
-        <Layer index={2}>
-          <EditAccountPopup
-            data={data}
-            closePopupFn={closeEditPopup}
-            refetch={refetch}
-          />
-        </Layer>
-      )}
+      <AnimatePresence>
+        {editMode && (
+          <Layer index={2}>
+            <EditAccountPopup
+              data={data}
+              closePopupFn={closeEditPopup}
+              refetch={refetch}
+            />
+          </Layer>
+        )}
 
-      {deleteAccountPopup && (
-        <Layer index={2}>
-          <DeleteAccountPopup closePopupFn={closeDeleteAccountPopup} />
-        </Layer>
-      )}
+        {deleteAccountPopup && (
+          <Layer index={2}>
+            <DeleteAccountPopup closePopupFn={closeDeleteAccountPopup} />
+          </Layer>
+        )}
+      </AnimatePresence>
     </UserSettingPopupWrapper>
   );
 };
 
-const UserSettingPopupWrapper = styled.div`
+const UserSettingPopupWrapper = styled(motion.div)`
   width: 100%;
   height: 100%;
   display: flex;
-
-  opacity: 1;
-  transform: scale(1);
-  animation: showSettingPopup 200ms ease-in-out;
-
-  @keyframes showSettingPopup {
-    from {
-      opacity: 0;
-      transform: scale(1.2);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
 `;
 
 const UserSettingPopopSidebarWrapper = styled.div`

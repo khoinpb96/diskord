@@ -38,8 +38,17 @@ const DeleteAccountPopup: React.FC<DeleteAccountPopupProps> = ({
   };
 
   return (
-    <Modal>
-      <Popup>
+    <Modal
+      initial={{ background: "rgba(0, 0, 0, 0)" }}
+      animate={{ background: "rgba(0, 0, 0, 0.85)" }}
+      exit={{ background: "rgba(0, 0, 0, 0)" }}
+      transition={{ ease: "easeInOut", duration: 0.2 }}
+    >
+      <Popup
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+      >
         <form onSubmit={handleFormSubmit}>
           <h2>Delete Account</h2>
 

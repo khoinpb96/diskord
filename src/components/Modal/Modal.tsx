@@ -1,25 +1,13 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const Modal = styled.div`
+const Modal = styled(motion.div)`
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
 
   display: flex;
   justify-content: center;
   align-items: center;
-
-  animation: showModal 200ms ease-in-out;
-
-  @keyframes showModal {
-    from {
-      background: rgba(0, 0, 0, 0);
-    }
-
-    to {
-      background: rgba(0, 0, 0, 0.85);
-    }
-  }
 `;
 
 export default Modal;
