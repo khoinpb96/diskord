@@ -1,40 +1,39 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import userInitAvaUrl from "../../assets/user.png";
-import logoutIconUrl from "../../assets/logout-icon.svg";
 import closeIconUrl from "../../assets/close-icon.svg";
+import logoutIconUrl from "../../assets/logout-icon.svg";
+import userInitAvaUrl from "../../assets/user.png";
+import DeleteAccountPopup from "../DeleteAccountPopup/DeleteAccountPopup";
+import EditAccountPopup from "../EditAccountPopup/EditAccountPopup";
 import Layer from "../Layer/Layer";
-import Modal from "../Modal/Modal";
-import ModalCard from "../ModalCard/ModalCard";
-import { useEditUser } from "../../utils/hooks";
-import DotsLoading from "../DotsLoading/DotsLoading";
 
 type UserSettingPopupProps = {
   data: any;
   closePopupFn: () => void;
-  openDeleteAccountPopupFn: () => void;
   refetch: any;
 };
 
 const UserSettingPopup: React.FC<UserSettingPopupProps> = ({
   data,
   closePopupFn,
-  openDeleteAccountPopupFn,
   refetch,
 }) => {
   const navigate = useNavigate();
 
   const [tabSelected] = useState("my-account");
   const [editMode, setEditMode] = useState(false);
-  const [email, setEmail] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
-  const [editUserFn, { data: editUserData, loading: editUserLoading }] =
-    useEditUser({
-      email: email || data?.email,
-      phoneNumber: phoneNum || data?.phoneNumber,
-    });
+  const [deleteAccountPopup, setDeleteAccountPopup] = useState(false);
+
+  const openDeleteAccountPopup = () => {
+    setDeleteAccountPopup(true);
+  };
+
+  const closeDeleteAccountPopup = () => {
+    setDeleteAccountPopup(false);
+  };
 
   const handleLogoutButton = () => {
     localStorage.removeItem("accessToken");
@@ -45,34 +44,17 @@ const UserSettingPopup: React.FC<UserSettingPopupProps> = ({
     setEditMode(true);
   };
 
-  const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePhoneNumInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPhoneNum(e.target.value);
-  };
-
-  const closeEditPopup = (e: React.MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
-    setEmail("");
-    setPhoneNum("");
-    setEditMode(false);
-  };
-
-  const handleEditUserFormSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-    const res = await editUserFn();
-    res.data?.editUser && (await refetch());
+  const closeEditPopup = () => {
     setEditMode(false);
   };
 
   return (
-    <UserSettingPopupWrapper>
+    <UserSettingPopupWrapper
+      initial={{ opacity: 0, scale: 1.2 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 1.1 }}
+      transition={{ ease: "easeInOut", duration: 0.2 }}
+    >
       <UserSettingPopopSidebarWrapper>
         <UserSettingPopopSidebar>
           <div className="header">user settings</div>
@@ -163,68 +145,36 @@ const UserSettingPopup: React.FC<UserSettingPopupProps> = ({
 
           <AccountRemovalWrapper>
             <h5>Account Removal</h5>
-            <button onClick={openDeleteAccountPopupFn}>Delete Account</button>
+            <button onClick={openDeleteAccountPopup}>Delete Account</button>
           </AccountRemovalWrapper>
         </UserSettingPopopContent>
       </UserSettingPopopContentWrapper>
 
-      {editMode && (
-        <Layer index={2}>
-          <Modal>
-            <EditAccountPopup>
-              <form onSubmit={handleEditUserFormSubmit}>
-                <h2>
-                  Edit Account
-                  <img src={closeIconUrl} onClick={closeEditPopup} />
-                </h2>
+      <AnimatePresence>
+        {editMode && (
+          <Layer index={2}>
+            <EditAccountPopup
+              data={data}
+              closePopupFn={closeEditPopup}
+              refetch={refetch}
+            />
+          </Layer>
+        )}
 
-                <div className="confirm">
-                  <h5>Email</h5>
-                  <input value={email} onChange={handleEmailInputChange} />
-
-                  <h5>Phone Number</h5>
-                  <input
-                    value={phoneNum}
-                    onChange={handlePhoneNumInputChange}
-                  />
-                </div>
-
-                <div className="footer">
-                  <button className="cancel-btn" onClick={closeEditPopup}>
-                    Cancel
-                  </button>
-                  <button className="confirm-btn">
-                    {editUserLoading ? <DotsLoading /> : "Confirm"}
-                  </button>
-                </div>
-              </form>
-            </EditAccountPopup>
-          </Modal>
-        </Layer>
-      )}
+        {deleteAccountPopup && (
+          <Layer index={2}>
+            <DeleteAccountPopup closePopupFn={closeDeleteAccountPopup} />
+          </Layer>
+        )}
+      </AnimatePresence>
     </UserSettingPopupWrapper>
   );
 };
 
-const UserSettingPopupWrapper = styled.div`
+const UserSettingPopupWrapper = styled(motion.div)`
   width: 100%;
   height: 100%;
   display: flex;
-
-  opacity: 1;
-  transform: scale(1);
-  animation: showSettingPopup 200ms ease-in-out;
-
-  @keyframes showSettingPopup {
-    from {
-      opacity: 0;
-      transform: scale(1.2);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
 `;
 
 const UserSettingPopopSidebarWrapper = styled.div`
@@ -575,111 +525,6 @@ const EditButton = styled.div`
 
   &:hover {
     background-color: #686d73;
-  }
-`;
-
-const EditAccountPopup = styled(ModalCard)`
-  h2 {
-    padding: 1rem;
-    font-size: 20px;
-    color: #fff;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    img {
-      cursor: pointer;
-    }
-  }
-
-  .warning-card {
-    padding: 10px;
-    margin: 0 1rem;
-
-    color: #fff;
-    background-color: #faa81a;
-    border-radius: 5px;
-
-    font-size: 14px;
-  }
-
-  .confirm {
-    padding: 1rem;
-
-    h5 {
-      margin-bottom: 8px;
-      color: #b9bbbe;
-
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 14px;
-      color: #dcddde;
-      background-color: #202225;
-
-      border: none;
-      border-radius: 3px;
-      outline: none;
-
-      height: 40px;
-      width: 100%;
-
-      margin-bottom: 1rem;
-    }
-  }
-
-  .footer {
-    padding: 1rem;
-    border-radius: 0 0 5px 5px;
-    background-color: #2f3136;
-
-    display: flex;
-    justify-content: flex-end;
-
-    .cancel-btn {
-      height: 38px;
-      min-width: 96px;
-      min-height: 38px;
-
-      color: #fff;
-      background: none;
-      border: none;
-      border-radius: 3px;
-      font-size: 13px;
-
-      padding: 2px 16px;
-      cursor: pointer;
-      transition: 170ms ease-out;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .confirm-btn {
-      color: #fff;
-      background-color: #5865f2;
-
-      height: 38px;
-      min-width: 96px;
-      min-height: 38px;
-
-      border: none;
-      border-radius: 3px;
-
-      font-size: 13px;
-      padding: 2px 16px;
-      cursor: pointer;
-      transition: 170ms ease-out;
-
-      &:hover {
-        background-color: #4752c4;
-      }
-    }
   }
 `;
 

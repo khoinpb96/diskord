@@ -63,7 +63,11 @@ const RegisterForm = () => {
   };
 
   return (
-    <PageForm onSubmit={handleRegisterSubmit}>
+    <PageForm
+      initial={{ opacity: 0, scale: 1.05, translateY: "-20%" }}
+      animate={{ opacity: 1, scale: 1, translateY: 0 }}
+      onSubmit={handleRegisterSubmit}
+    >
       <div className="header mb20">
         <h3>Create an accout</h3>
       </div>

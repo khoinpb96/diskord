@@ -6,11 +6,11 @@ import DotsLoading from "../DotsLoading/DotsLoading";
 import Modal from "../Modal/Modal";
 import ModalCard from "../ModalCard/ModalCard";
 
-type DeleteAccountPopupModalProps = {
+type DeleteAccountPopupProps = {
   closePopupFn: () => void;
 };
 
-const DeleteAccountPopupModal: React.FC<DeleteAccountPopupModalProps> = ({
+const DeleteAccountPopup: React.FC<DeleteAccountPopupProps> = ({
   closePopupFn,
 }) => {
   const [password, setPassword] = useState("");
@@ -19,7 +19,9 @@ const DeleteAccountPopupModal: React.FC<DeleteAccountPopupModalProps> = ({
   const [deleteUser, { loading }] = useDeleteUser(password);
   const navigate = useNavigate();
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     try {
       await deleteUser();
       localStorage.removeItem("accessToken");
@@ -36,51 +38,52 @@ const DeleteAccountPopupModal: React.FC<DeleteAccountPopupModalProps> = ({
   };
 
   return (
-    <Modal>
-      <DeleteAccountPopup>
-        <h2>Delete Account</h2>
+    <Modal
+      initial={{ background: "rgba(0, 0, 0, 0)" }}
+      animate={{ background: "rgba(0, 0, 0, 0.85)" }}
+      exit={{ background: "rgba(0, 0, 0, 0)" }}
+      transition={{ ease: "easeInOut", duration: 0.2 }}
+    >
+      <Popup
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+      >
+        <form onSubmit={handleFormSubmit}>
+          <h2>Delete Account</h2>
 
-        <div className="warning-card">
-          Are you sure that you want to delete your account? This will
-          immediately log you out of your account and you will not be able to
-          log in again.
-        </div>
+          <div className="warning-card">
+            Are you sure that you want to delete your account? This will
+            immediately log you out of your account and you will not be able to
+            log in again.
+          </div>
 
-        <div className="confirm">
-          <h5>Password</h5>
-          <input
-            type="password"
-            onChange={handlePasswordInputChange}
-            value={password}
-          />
+          <div className="inputs">
+            <h5 className={error ? "error" : ""}>
+              Password {error && <div className="error-message">- {error}</div>}
+            </h5>
+            <input
+              type="password"
+              onChange={handlePasswordInputChange}
+              value={password}
+            />
+          </div>
 
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-        </div>
-
-        <div className="footer">
-          <button className="cancel-btn" onClick={closePopupFn}>
-            Cancel
-          </button>
-          <button className="confirm-btn" onClick={handleFormSubmit}>
-            {loading ? <DotsLoading /> : "Delete Account"}
-          </button>
-        </div>
-      </DeleteAccountPopup>
+          <div className="footer">
+            <button type="button" className="cancel-btn" onClick={closePopupFn}>
+              Cancel
+            </button>
+            <button type="submit" className="confirm-btn">
+              {loading ? <DotsLoading /> : "Delete Account"}
+            </button>
+          </div>
+        </form>
+      </Popup>
     </Modal>
   );
 };
 
-const ErrorMessage = styled.div`
-  color: #f38688;
-
-  margin-top: 8px;
-  margin-left: 1px;
-
-  font-size: 12px;
-  font-weight: 400;
-`;
-
-const DeleteAccountPopup = styled(ModalCard)`
+const Popup = styled(ModalCard)`
   h2 {
     padding: 1rem;
     font-size: 20px;
@@ -97,7 +100,7 @@ const DeleteAccountPopup = styled(ModalCard)`
     font-size: 14px;
   }
 
-  .confirm {
+  .inputs {
     padding: 1rem;
 
     h5 {
@@ -106,6 +109,15 @@ const DeleteAccountPopup = styled(ModalCard)`
 
       font-size: 12px;
       text-transform: uppercase;
+
+      &.error {
+        color: #f38688;
+      }
+
+      & .error-message {
+        display: inline-block;
+        text-transform: capitalize;
+      }
     }
 
     input {
@@ -174,4 +186,4 @@ const DeleteAccountPopup = styled(ModalCard)`
   }
 `;
 
-export default DeleteAccountPopupModal;
+export default DeleteAccountPopup;

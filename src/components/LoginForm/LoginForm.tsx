@@ -49,7 +49,11 @@ const LoginForm = () => {
   }, []);
 
   return (
-    <PageForm onSubmit={handleFormSubmit}>
+    <PageForm
+      initial={{ opacity: 0, scale: 1.05, translateY: "-20%" }}
+      animate={{ opacity: 1, scale: 1, translateY: 0 }}
+      onSubmit={handleFormSubmit}
+    >
       <div className="header mb20">
         <h3>Welcome back!</h3>
         <p className="subtitle">We're so excited to see you again!</p>

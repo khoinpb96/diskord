@@ -18,7 +18,7 @@ const Panel: React.FC<PanelProps> = ({ data, openSettingPopupFn }) => {
         <PanelAvatar src={userInitAvaUrl} />
       </PanelAvatarWrapper>
       <PanelNameTag>
-        <div className="username">{data.username || "Loading..."}</div>
+        <div className="username">{data?.username}</div>
         <div className="status">
           <div className="default">love Mint!</div>
           <div className="hovered">#ID</div>
