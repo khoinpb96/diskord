@@ -1,40 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useDeleteUser } from "../../utils/hooks";
+import { useDeleteFriend } from "../../utils/hooks";
+import useDeleteUser from "../../utils/hooks/useDeleteUser";
 import DotsLoading from "../DotsLoading/DotsLoading";
 import Modal from "../Modal/Modal";
 import ModalCard from "../ModalCard/ModalCard";
 
-type DeleteAccountPopupProps = {
+type DeleteFriendPopupProps = {
+  deletingFriendUsername: string;
   closePopupFn: () => void;
+  onDeleteSuccess: () => void;
 };
 
-const DeleteAccountPopup: React.FC<DeleteAccountPopupProps> = ({
+const DeleteFriendPopup: React.FC<DeleteFriendPopupProps> = ({
   closePopupFn,
+  deletingFriendUsername,
+  onDeleteSuccess,
 }) => {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [deleteFriend, { loading }] = useDeleteFriend(deletingFriendUsername);
 
-  const [deleteUser, { loading }] = useDeleteUser(password);
-  const navigate = useNavigate();
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleConfirmBtnClick = async () => {
     try {
-      await deleteUser();
-      localStorage.removeItem("accessToken");
-      navigate("/", { replace: true });
-    } catch (error: any) {
-      setError(error.message);
+      await deleteFriend();
+      await onDeleteSuccess();
+    } catch (err: any) {
+      console.log(err.message);
     }
-  };
-
-  const handlePasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPassword(e.target.value);
   };
 
   return (
@@ -49,35 +41,25 @@ const DeleteAccountPopup: React.FC<DeleteAccountPopupProps> = ({
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
       >
-        <form onSubmit={handleFormSubmit}>
-          <h2>Delete Account</h2>
+        <h2>Remove '{"username"}'</h2>
 
-          <div className="warning-card">
-            Are you sure that you want to delete your account? This will
-            immediately log you out of your account and you will not be able to
-            log in again.
-          </div>
+        <div className="content">
+          Are you sure you want to permanently remove {"username"} from your
+          friends?
+        </div>
 
-          <div className="inputs">
-            <h5 className={error ? "error" : ""}>
-              Password {error && <div className="error-message">- {error}</div>}
-            </h5>
-            <input
-              type="password"
-              onChange={handlePasswordInputChange}
-              value={password}
-            />
-          </div>
-
-          <div className="footer">
-            <button type="button" className="cancel-btn" onClick={closePopupFn}>
-              Cancel
-            </button>
-            <button type="submit" className="confirm-btn">
-              {loading ? <DotsLoading /> : "Delete Account"}
-            </button>
-          </div>
-        </form>
+        <div className="footer">
+          <button type="button" className="cancel-btn" onClick={closePopupFn}>
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="confirm-btn"
+            onClick={handleConfirmBtnClick}
+          >
+            {loading ? <DotsLoading /> : "Remove friend"}
+          </button>
+        </div>
       </Popup>
     </Modal>
   );
@@ -90,14 +72,10 @@ const Popup = styled(ModalCard)`
     color: #fff;
   }
 
-  .warning-card {
-    background-color: #faa81a;
-    color: #fff;
-
-    margin: 0 1rem;
-    padding: 10px;
-    border-radius: 5px;
+  .content {
+    padding: 0px 1rem 40px 1rem;
     font-size: 14px;
+    color: #dcddde;
   }
 
   .inputs {
@@ -165,7 +143,7 @@ const Popup = styled(ModalCard)`
 
     .confirm-btn {
       color: #fff;
-      background-color: #5865f2;
+      background-color: #d83c3e;
 
       height: 38px;
       min-width: 96px;
@@ -180,10 +158,10 @@ const Popup = styled(ModalCard)`
       transition: 170ms ease-out;
 
       &:hover {
-        background-color: #4752c4;
+        background-color: #a12d2f;
       }
     }
   }
 `;
 
-export default DeleteAccountPopup;
+export default DeleteFriendPopup;
