@@ -1,17 +1,24 @@
 import { AnimatePresence } from "framer-motion";
+import { stringify } from "querystring";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import friendsEmptyIlluUrl from "../../assets/friends-empty-illu.svg";
 import friendsIconUrl from "../../assets/friends-icon.svg";
+import searchIcon from "../../assets/search-icon.svg";
+
+import AddfriendTab from "../../components/AddfriendTab/AddfriendTab";
+import DeleteFriendPopup from "../../components/DeleteFriendPopup/DeleteFriendPopup ";
 import Layer from "../../components/Layer/Layer";
 import Panel from "../../components/Panel/Panel";
+import PeopleListItem from "../../components/PeopleListItem/PeopleListItem";
+import QuickSwitcher from "../../components/QuickSwitcher/QuickSwitcher";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import UserSettingPopup from "../../components/UserSettingPopup/UserSettingPopup";
-import useGetUser from "../../utils/hooks/useGetUser";
+
+import { useGetUser } from "../../utils/hooks";
 import LoadingPage from "../LoadingPage/LoadingPage";
+
 import {
-  AddFriendWrapper,
   Background,
   Base,
   BaseContent,
@@ -20,9 +27,14 @@ import {
   Channels,
   ContentBody,
   ContentHeader,
-  FriendsEmpty,
+  ContentHeaderTabBar,
+  ContentHeaderTabBarItem,
+  Divider,
+  FriendsTabSearchBar,
+  FriendsTabWrapper,
+  FriendTabTitle,
   InviteButtonIcon,
-  PeopleCol,
+  PeopleList,
   PrivateChannelsHeaderContainer,
   SearchBar,
   Wrapper,
@@ -31,7 +43,11 @@ import {
 const ChannelsPage = () => {
   const navigate = useNavigate();
   const [settingPopup, setSettingPopup] = useState(false);
-  const [usernameInput, setUsernameInput] = useState("");
+  const [addFriendPopup, setAddFriendPopup] = useState(false);
+  const [selectedTabBarItem, setSelectedTabBarItem] = useState("All");
+  const [deleteFriendPopup, setDeleteFriendPopup] = useState(false);
+  const [deletingFriendUsername, setDeletingFriendUsername] = useState("");
+
   const { data, loading, error, refetch } = useGetUser();
 
   useEffect(() => {
@@ -39,7 +55,6 @@ const ChannelsPage = () => {
       localStorage.removeItem("accessToken");
       return navigate("/", { replace: true });
     }
-
     refetch();
   }, [error]);
 
@@ -51,28 +66,42 @@ const ChannelsPage = () => {
     setSettingPopup(false);
   }, []);
 
-  const handleUsernameInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setUsernameInput(e.target.value);
+  const openAddFriendPopup = () => {
+    setAddFriendPopup(true);
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("form submit");
+  const closeAddFriendPopup = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setAddFriendPopup(false);
+  };
+
+  const openDeleteFriendPopup = (friendUsername: string) => {
+    setDeleteFriendPopup(true);
+    setDeletingFriendUsername(friendUsername);
+  };
+
+  const closeDeleteFriendPopup = () => {
+    setDeleteFriendPopup(false);
+  };
+
+  const handleTabBarItemClick = (e: any) => {
+    setSelectedTabBarItem(e.target.innerHTML);
+  };
+
+  const handleDeleteFriendSuccess = async () => {
+    setDeleteFriendPopup(false);
+    await refetch();
   };
 
   if (loading) return <LoadingPage />;
 
-  const variants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    show: { opacity: 1 },
-  };
-
   return (
     <Background>
       <Wrapper
-        variants={variants}
+        variants={{
+          hidden: { opacity: 0, scale: 0.9 },
+          show: { opacity: 1 },
+        }}
         animate={settingPopup ? "hidden" : "show"}
         transition={{ ease: "easeInOut", duration: 0.2 }}
       >
@@ -81,7 +110,9 @@ const ChannelsPage = () => {
           <BaseSideBar>
             <div>
               <SearchBar>
-                <button>Find or start a conversation</button>
+                <button onClick={openAddFriendPopup}>
+                  Find or start a conversation
+                </button>
               </SearchBar>
 
               <Channels>
@@ -104,37 +135,53 @@ const ChannelsPage = () => {
           </BaseSideBar>
 
           <BaseContent>
-            <ContentHeader></ContentHeader>
+            <ContentHeader>
+              <img src={friendsIconUrl} />
+              <h3>Friends</h3>
+              <Divider />
+              <ContentHeaderTabBar role="tablist">
+                <ContentHeaderTabBarItem
+                  isSelected={selectedTabBarItem === "All"}
+                  onClick={handleTabBarItemClick}
+                >
+                  All
+                </ContentHeaderTabBarItem>
+                <ContentHeaderTabBarItem
+                  isSelected={selectedTabBarItem === "Add Friend"}
+                  onClick={handleTabBarItemClick}
+                >
+                  Add Friend
+                </ContentHeaderTabBarItem>
+              </ContentHeaderTabBar>
+            </ContentHeader>
             <ContentBody>
-              <PeopleCol>
-                <header>
-                  <h2>Add Friend</h2>
-                  <form onSubmit={handleFormSubmit}>
-                    <div className="instrument">
-                      You can add a friend with their Discord Tag. It's cAsE
-                      sEnSitIvE!
-                    </div>
-                    <AddFriendWrapper>
-                      <input
-                        type="text"
-                        placeholder="Enter a Username"
-                        value={usernameInput}
-                        onChange={handleUsernameInputChange}
-                      />
-                      <button type="submit" disabled={!usernameInput}>
-                        Send Friend Request
-                      </button>
-                    </AddFriendWrapper>
-                  </form>
-                </header>
-              </PeopleCol>
+              {selectedTabBarItem === "All" && data?.user && (
+                <FriendsTabWrapper>
+                  <FriendsTabSearchBar>
+                    <input placeholder="Search" />
+                    <img src={searchIcon} />
+                  </FriendsTabSearchBar>
 
-              <FriendsEmpty>
-                <img src={friendsEmptyIlluUrl} />
-                <div>
-                  Wumpus is waiting on friends. You don't have to though!
-                </div>
-              </FriendsEmpty>
+                  <FriendTabTitle>
+                    All Friends - {data.user.friends.length}
+                  </FriendTabTitle>
+                  <PeopleList>
+                    {data?.user?.friends &&
+                      data.user.friends.map(
+                        (friendData: { id: string; username: string }) => (
+                          <PeopleListItem
+                            key={friendData.id}
+                            openPopupFn={openDeleteFriendPopup}
+                            friendData={friendData}
+                          />
+                        )
+                      )}
+                  </PeopleList>
+                </FriendsTabWrapper>
+              )}
+              {selectedTabBarItem === "Add Friend" && (
+                <AddfriendTab onAddSuccess={refetch} />
+              )}
             </ContentBody>
           </BaseContent>
         </Base>
@@ -147,6 +194,22 @@ const ChannelsPage = () => {
               data={data.user}
               refetch={refetch}
               closePopupFn={closeSettingPopup}
+            />
+          </Layer>
+        )}
+
+        {addFriendPopup && (
+          <Layer index={1}>
+            <QuickSwitcher closePopupFn={closeAddFriendPopup} />
+          </Layer>
+        )}
+
+        {deleteFriendPopup && (
+          <Layer index={1}>
+            <DeleteFriendPopup
+              closePopupFn={closeDeleteFriendPopup}
+              deletingFriendUsername={deletingFriendUsername}
+              onDeleteSuccess={handleDeleteFriendSuccess}
             />
           </Layer>
         )}

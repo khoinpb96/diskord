@@ -199,6 +199,60 @@ export const ContentHeader = styled.div`
   padding: 0 8px;
   font-size: 16px;
   color: #dcddde;
+
+  display: flex;
+  align-items: center;
+
+  img {
+    margin: 0 8px;
+    width: 24px;
+    filter: brightness(0.6);
+  }
+
+  h3 {
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+
+    margin: 0 8px 0 0;
+  }
+`;
+
+export const Divider = styled.div`
+  width: 1px;
+  height: 24px;
+  margin: 0 8px;
+  background-color: #4f545c71;
+`;
+
+export const ContentHeaderTabBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  margin: 0 1rem;
+`;
+
+export const ContentHeaderTabBarItem = styled.div<{ isSelected?: boolean }>`
+  display: flex;
+  justify-content: center;
+  padding: 2px 8px;
+  min-width: 40px;
+  border-radius: 4px;
+  font-size: 16px;
+
+  background-color: ${({ isSelected }) =>
+    isSelected ? "#4f545c99" : "transparent"};
+  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.8)};
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+    background-color: ${({ isSelected }) =>
+      isSelected ? "#4f545c66" : "#4f545c99"};
+  }
 `;
 
 export const ContentBody = styled.div`
@@ -225,97 +279,74 @@ export const ContentBody = styled.div`
   }
 `;
 
-export const PeopleCol = styled.div`
+export const FriendsTabWrapper = styled.div`
   width: 100%;
-
-  header {
-    padding: 20px 30px;
-    border-bottom: 1px solid rgba(79, 84, 92, 0.48);
-    min-width: 450px;
-
-    h2 {
-      margin-bottom: 8px;
-      color: #fff;
-
-      font-size: 16px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-  }
-
-  .instrument {
-    color: #b9bbbe;
-    font-size: 13px;
-    letter-spacing: -0.3px;
-    font-weight: 400;
-  }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
-export const AddFriendWrapper = styled.div`
-  background-color: #202225;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-
+export const FriendsTabSearchBar = styled.div`
+  margin: 16px 20px 8px 30px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  border-radius: 4px;
 
-  margin-top: 16px;
-  padding: 0 12px;
+  overflow: hidden;
   position: relative;
 
   input {
-    background-color: unset;
-    border: none;
-    padding: 0;
     font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    white-space: pre;
+    font-weight: 400;
+    line-height: 32px;
 
-    height: 40px;
+    padding: 1px 8px;
     flex: 1;
-
     outline: 0;
+    border: none;
+    resize: none;
+
     color: #dcddde;
-    margin: 4px 8px 4px 0;
+    background: #202225;
   }
 
-  button {
-    color: #fff;
-    background-color: #5865f2;
-
-    cursor: pointer;
-    padding: 8px 16px;
-
-    font-size: 12px;
-    font-weight: 500;
-
-    outline: 0;
-    border: none;
-    border-radius: 3px;
-
-    &:disabled {
-      background-color: #3c438b;
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
+  img {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    cursor: text;
   }
 `;
 
-export const FriendsEmpty = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 52px;
+export const FriendTabTitle = styled.h2`
+  padding: 16px 20px 8px 30px;
 
-  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: #b9bbbe;
+`;
+
+export const PeopleList = styled.div`
+  overflow-y: scroll;
+  margin: 8px 0 4px;
   flex: 1;
 
-  div {
-    font-size: 14px;
-    text-align: center;
-    color: #a3a6aa;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #2e3338;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1b1e22;
   }
 `;

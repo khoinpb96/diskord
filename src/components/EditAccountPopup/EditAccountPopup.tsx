@@ -40,12 +40,16 @@ const EditAccountPopup: React.FC<any> = ({ data, closePopupFn, refetch }) => {
     setPhoneNumError(!isValidPhoneNumer);
 
     if (isValidEmail && isValidPhoneNumer) {
-      const res = await editUserFn();
-      res.data?.editUser && (await refetch());
+      try {
+        const res = await editUserFn();
+        res.data?.editUser && (await refetch());
 
-      setEmail("");
-      setPhoneNum("");
-      closePopupFn();
+        setEmail("");
+        setPhoneNum("");
+        closePopupFn();
+      } catch (error: any) {
+        console.log(error.message);
+      }
     }
   };
 

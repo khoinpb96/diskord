@@ -37,7 +37,7 @@ const LoginForm = () => {
       localStorage.setItem("accessToken", token);
       navigate("/channels");
     } catch (error: any) {
-      return console.log(error.message);
+      return console.log(error);
     }
   };
 
