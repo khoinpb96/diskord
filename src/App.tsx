@@ -10,7 +10,7 @@ function App() {
         <Route path="register" element={<RegisterForm />} />
       </Route>
 
-      <Route path="/channels" element={<ChannelsPage />}></Route>
+      <Route path="/channels/*" element={<ChannelsPage />} />
 
       <Route path="*" element={<NotfoundPage />} />
     </Routes>

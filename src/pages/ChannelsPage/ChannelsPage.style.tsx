@@ -350,3 +350,36 @@ export const PeopleList = styled.div`
     background: #1b1e22;
   }
 `;
+
+export const DirectMessagesContainer = styled.div``;
+
+export const DirectMessage = styled(NavLink)`
+  margin: 0 8px;
+  padding: 0 8px;
+
+  border-radius: 4px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.6);
+
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(79, 84, 92, 0.4);
+  }
+
+  img {
+    width: 32px;
+    border-radius: 50%;
+  }
+
+  .username {
+    font-size: 14px;
+    font-weight: 600;
+  }
+`;
