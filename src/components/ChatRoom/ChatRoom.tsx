@@ -38,8 +38,8 @@ const ChatRoom: React.FC<any> = ({ channelId }) => {
 
       setMessagesData((prev: any) => {
         const res = [...prev];
-        const sameUser = prev[0].username === message.username;
-        const recentlySent = prev[0].createAt === message.createAt;
+        const sameUser = prev[0]?.username === message.username;
+        const recentlySent = prev[0]?.createAt === message.createAt;
 
         if (sameUser && recentlySent) {
           res.shift();
