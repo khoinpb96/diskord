@@ -11,6 +11,13 @@ const GET_USER_QUERY = gql`
         id
         username
       }
+      channels {
+        id
+        participants {
+          id
+          username
+        }
+      }
     }
   }
 `;

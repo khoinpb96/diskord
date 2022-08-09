@@ -1,12 +1,14 @@
 import { AnimatePresence } from "framer-motion";
-import { stringify } from "querystring";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 import friendsIconUrl from "../../assets/friends-icon.svg";
 import searchIcon from "../../assets/search-icon.svg";
+import user1 from "../../assets/user1.png";
 
 import AddfriendTab from "../../components/AddfriendTab/AddfriendTab";
+import ChatRoom from "../../components/ChatRoom/ChatRoom";
 import DeleteFriendPopup from "../../components/DeleteFriendPopup/DeleteFriendPopup ";
 import Layer from "../../components/Layer/Layer";
 import Panel from "../../components/Panel/Panel";
@@ -29,6 +31,8 @@ import {
   ContentHeader,
   ContentHeaderTabBar,
   ContentHeaderTabBarItem,
+  DirectMessage,
+  DirectMessagesContainer,
   Divider,
   FriendsTabSearchBar,
   FriendsTabWrapper,
@@ -42,6 +46,9 @@ import {
 
 const ChannelsPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const chatRoute = location.pathname.split("/")[2];
+
   const [settingPopup, setSettingPopup] = useState(false);
   const [addFriendPopup, setAddFriendPopup] = useState(false);
   const [selectedTabBarItem, setSelectedTabBarItem] = useState("All");
@@ -93,6 +100,14 @@ const ChannelsPage = () => {
     await refetch();
   };
 
+  const dmChannels = data?.user?.channels?.map((channel: any) => {
+    const participant = channel.participants?.filter(
+      (p: any) => p.id !== data?.user.id
+    );
+
+    return { id: channel.id, participant: participant[0].username };
+  });
+
   if (loading) return <LoadingPage />;
 
   return (
@@ -116,7 +131,7 @@ const ChannelsPage = () => {
               </SearchBar>
 
               <Channels>
-                <Channel to="@me">
+                <Channel to="/channels">
                   <img src={friendsIconUrl} />
                   Friends
                 </Channel>
@@ -129,60 +144,77 @@ const ChannelsPage = () => {
                   <div className="tooltip">Create DM</div>
                 </InviteButtonIcon>
               </PrivateChannelsHeaderContainer>
+
+              <DirectMessagesContainer>
+                {dmChannels?.map((channel: any) => (
+                  <DirectMessage key={channel.id} to={channel.id}>
+                    <img src={user1} />
+                    <div className="username">{channel.participant}</div>
+                  </DirectMessage>
+                ))}
+              </DirectMessagesContainer>
             </div>
 
             <Panel data={data?.user} openSettingPopupFn={openSettingPopup} />
           </BaseSideBar>
 
           <BaseContent>
-            <ContentHeader>
-              <img src={friendsIconUrl} />
-              <h3>Friends</h3>
-              <Divider />
-              <ContentHeaderTabBar role="tablist">
-                <ContentHeaderTabBarItem
-                  isSelected={selectedTabBarItem === "All"}
-                  onClick={handleTabBarItemClick}
-                >
-                  All
-                </ContentHeaderTabBarItem>
-                <ContentHeaderTabBarItem
-                  isSelected={selectedTabBarItem === "Add Friend"}
-                  onClick={handleTabBarItemClick}
-                >
-                  Add Friend
-                </ContentHeaderTabBarItem>
-              </ContentHeaderTabBar>
-            </ContentHeader>
-            <ContentBody>
-              {selectedTabBarItem === "All" && data?.user && (
-                <FriendsTabWrapper>
-                  <FriendsTabSearchBar>
-                    <input placeholder="Search" />
-                    <img src={searchIcon} />
-                  </FriendsTabSearchBar>
+            {chatRoute ? (
+              <ChatRoom channelId={chatRoute} />
+            ) : (
+              <>
+                <ContentHeader>
+                  <img src={friendsIconUrl} />
+                  <h3>Friends</h3>
+                  <Divider />
+                  <ContentHeaderTabBar role="tablist">
+                    <ContentHeaderTabBarItem
+                      isSelected={selectedTabBarItem === "All"}
+                      onClick={handleTabBarItemClick}
+                    >
+                      All
+                    </ContentHeaderTabBarItem>
+                    <ContentHeaderTabBarItem
+                      isSelected={selectedTabBarItem === "Add Friend"}
+                      onClick={handleTabBarItemClick}
+                    >
+                      Add Friend
+                    </ContentHeaderTabBarItem>
+                  </ContentHeaderTabBar>
+                </ContentHeader>
 
-                  <FriendTabTitle>
-                    All Friends - {data.user.friends.length}
-                  </FriendTabTitle>
-                  <PeopleList>
-                    {data?.user?.friends &&
-                      data.user.friends.map(
-                        (friendData: { id: string; username: string }) => (
-                          <PeopleListItem
-                            key={friendData.id}
-                            openPopupFn={openDeleteFriendPopup}
-                            friendData={friendData}
-                          />
-                        )
-                      )}
-                  </PeopleList>
-                </FriendsTabWrapper>
-              )}
-              {selectedTabBarItem === "Add Friend" && (
-                <AddfriendTab onAddSuccess={refetch} />
-              )}
-            </ContentBody>
+                <ContentBody>
+                  {selectedTabBarItem === "All" && data?.user && (
+                    <FriendsTabWrapper>
+                      <FriendsTabSearchBar>
+                        <input placeholder="Search" />
+                        <img src={searchIcon} />
+                      </FriendsTabSearchBar>
+
+                      <FriendTabTitle>
+                        All Friends - {data.user.friends.length}
+                      </FriendTabTitle>
+                      <PeopleList>
+                        {data?.user?.friends &&
+                          data.user.friends.map(
+                            (friendData: { id: string; username: string }) => (
+                              <PeopleListItem
+                                key={friendData.id}
+                                openPopupFn={openDeleteFriendPopup}
+                                friendData={friendData}
+                                onCreateChannelSuccess={refetch}
+                              />
+                            )
+                          )}
+                      </PeopleList>
+                    </FriendsTabWrapper>
+                  )}
+                  {selectedTabBarItem === "Add Friend" && (
+                    <AddfriendTab onAddSuccess={refetch} />
+                  )}
+                </ContentBody>
+              </>
+            )}
           </BaseContent>
         </Base>
       </Wrapper>
